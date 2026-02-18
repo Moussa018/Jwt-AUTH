@@ -1,24 +1,35 @@
-HELP.md
-.gradle
+# ─── Gradle ───────────────────────────────────────────────────────────────────
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# ─── Spring Boot ──────────────────────────────────────────────────────────────
+HELP.md
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+target/
 
-### IntelliJ IDEA ###
-.idea
+# ─── Secrets & Config sensibles ───────────────────────────────────────────────
+application-prod.yaml
+application-prod.yml
+application-local.yaml
+application-local.yml
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+
+# ─── IntelliJ IDEA ────────────────────────────────────────────────────────────
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -26,12 +37,53 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
+# ─── Eclipse ──────────────────────────────────────────────────────────────────
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# ─── NetBeans ─────────────────────────────────────────────────────────────────
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# ─── VS Code ──────────────────────────────────────────────────────────────────
 .vscode/
+*.code-workspace
+
+# ─── macOS ────────────────────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ─── Windows ──────────────────────────────────────────────────────────────────
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ─── Linux ────────────────────────────────────────────────────────────────────
+*~
+.nfs*
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+log/
+
+# ─── Docker ───────────────────────────────────────────────────────────────────
+docker-compose.override.yml
+
+# ─── Tests & Coverage ─────────────────────────────────────────────────────────
+.jacoco/
+test-results/

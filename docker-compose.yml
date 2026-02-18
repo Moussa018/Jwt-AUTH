@@ -1,0 +1,41 @@
+services:
+  # --- BASE DE DONNÉES ---
+  auth-db:
+    image: postgres:15-alpine
+    container_name: auth-db
+    restart: always
+    environment:
+      POSTGRES_DB: jwt_auth
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # --- MICROSERVICE AUTH ---
+  auth-service:
+    build: .
+    container_name: auth-service
+    restart: on-failure
+    ports:
+      - "8081:8081"
+    environment:
+      # On remplace localhost par le nom du service 'auth-db'
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-db:5432/jwt_auth
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=mysecretpassword
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - APPLICATION_SECURITY_JWT_SECRET_KEY=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      - APPLICATION_SECURITY_JWT_EXPIRATION=86400000
+    depends_on:
+      auth-db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

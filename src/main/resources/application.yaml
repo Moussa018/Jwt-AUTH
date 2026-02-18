@@ -3,18 +3,24 @@ spring:
     name: authentification_service
   datasource:
     url: jdbc:postgresql://localhost:5432/jwt_auth
-    driver-class-name : org.postgresql.Driver
+    driver-class-name: org.postgresql.Driver
     username: postgres
-    password : mysecretpassword
+    password: mysecretpassword
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
         format_sql: true
     database: postgresql
-    database-platform : org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 server:
   port: 8081
+
+application:
+  security:
+    jwt:
+      secret-key: 514a42852d433eed74958366eee00216fb3c73d8528387322377c44b1095b7e0
+      expiration: 86400000
