@@ -17,12 +17,7 @@ HELP.md
 target/
 
 # ─── Secrets & Config sensibles ───────────────────────────────────────────────
-application-prod.yaml
-application-prod.yml
-application-local.yaml
-application-local.yml
-.env
-.env.*
+application.yaml
 *.pem
 *.key
 *.p12
