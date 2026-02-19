@@ -1,9 +1,12 @@
+version: '3.9'
+
 services:
-  # --- BASE DE DONNÉES ---
-  auth-db:
-    image: postgres:15-alpine
-    container_name: auth-db
-    restart: always
+
+  # Base de données
+  postgres:
+    image: postgres:16-alpine
+    container_name: auth_postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: jwt_auth
       POSTGRES_USER: postgres
@@ -13,29 +16,36 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d jwt_auth"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # --- MICROSERVICE AUTH ---
+  #Application Spring Boot
   auth-service:
-    build: .
-    container_name: auth-service
-    restart: on-failure
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth_service
+    restart: unless-stopped
     ports:
-      - "8081:8081"
+      - "8090:8090"
     environment:
-      # On remplace localhost par le nom du service 'auth-db'
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-db:5432/jwt_auth
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=mysecretpassword
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - APPLICATION_SECURITY_JWT_SECRET_KEY=404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-      - APPLICATION_SECURITY_JWT_EXPIRATION=86400000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      SERVER_PORT: 8090
+      DB_NAME: jwt_auth
+      DB_USERNAME: postgres
+      DB_PASSWORD: mysecretpassword
+      JWT_SECRET_KEY: 514a42852d433eed74958366eee00216fb3c73d8528387322377c44b1095b7e0
+      JWT_EXPIRATION: 86400000
+      # JVM
+      JAVA_OPTS: "-Xmx512m -Xms256m"
     depends_on:
-      auth-db:
+      postgres:
+        # Attendre que PostgreSQL soit vraiment prêt avant de démarrer l'app
         condition: service_healthy
 
 volumes:
   postgres_data:
+    name: auth_postgres_data

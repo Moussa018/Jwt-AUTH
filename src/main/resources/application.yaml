@@ -2,10 +2,10 @@ spring:
   application:
     name: authentification_service
   datasource:
-    url: jdbc:postgresql://localhost:5432/jwt_auth
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:jwt_auth}
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: mysecretpassword
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:mysecretpassword}
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,10 +17,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 server:
-  port: 8081
+  port: ${SERVER_PORT:8090}
 
 application:
   security:
     jwt:
-      secret-key: 514a42852d433eed74958366eee00216fb3c73d8528387322377c44b1095b7e0
-      expiration: 86400000
+      secret-key: ${JWT_SECRET_KEY:514a42852d433eed74958366eee00216fb3c73d8528387322377c44b1095b7e0}
+      expiration: ${JWT_EXPIRATION:86400000}
