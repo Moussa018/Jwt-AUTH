@@ -15,7 +15,8 @@ HELP.md
 *.tar.gz
 *.rar
 target/
-
+application.yaml
+application.properties
 # ─── Secrets & Config sensibles ───────────────────────────────────────────────
 application.yaml
 *.pem
